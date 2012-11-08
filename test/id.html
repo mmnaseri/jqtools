@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>QUnit basic example</title>
+    <link rel="stylesheet" href="resources/qunit-1.10.0.css"/>
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<script src="resources/jquery-1.8.2.min.js"></script>
+<script src="resources/qunit-1.10.0.js"></script>
+<script src="../jquery.id-1.0.js"></script>
+<script>
+    var lifecycle = {
+        setup: function () {
+            $("#qunit-fixture").html('<div class="element" id="em1"></div><div class="element" id="em2"></div><div class="element" data-id></div><div class="element" data-id></div>');
+        }
+    };
+    module("Selection", lifecycle);
+    test("Identify: Chaining test", function() {
+        var selection = $(".element");
+        equal(selection.identify().length, selection.length, "the length of the selection does not change after applying the plugin");
+    });
+    test("Unidentify: Chaining test", function() {
+        var selection = $(".element");
+        equal(selection.unidentify().length, selection.length, "the length of the selection does not change after applying the plugin");
+    });
+    module("Events", lifecycle);
+    test("identify", function () {
+        var count = 0;
+        var selection = $(".element");
+        selection.on("identifying", function () {
+            count ++;
+        }).identify();
+        equal(count, selection.length, "All of the " + selection.length + " elements now have begun to get IDs");
+    });
+    test("identified", function () {
+        var count = 0;
+        var selection = $(".element");
+        selection.on("identified", function () {
+            count ++;
+        }).identify();
+        equal(count, selection.length, "All of the " + selection.length + " elements now have IDs");
+    });
+    test("autoIdentified", function () {
+        var count = 0;
+        var selection = $(".element");
+        var target = $(".element[data-id]");
+        selection.on("identified", function () {
+            if (this.autoIdentified) {
+                count ++;
+            }
+        }).identify();
+        equal(count, target.length, "All of the " + target.length + " elements now have automatically generated IDs");
+    });
+    test("unidentify", function () {
+        var count = 0;
+        var selection = $(".element");
+        selection.on("unidentify", function () {
+            count ++;
+        }).unidentify();
+        equal(count, selection.length, selection.length + " underwent a cleansing successfully");
+    });
+    test("unidentified", function () {
+        var count = 0;
+        var selection = $(".element");
+        var target = $(".element[data-id]");
+        selection.on("unidentified", function () {
+            count ++;
+        }).identify().unidentify();
+        equal(count, target.length, target.length + " elements from the total " + selection.length + " elements were cleared of the automatic IDs");
+    });
+</script>
+</body>
+</html>

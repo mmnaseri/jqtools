@@ -1,0 +1,15 @@
+.overlay {
+    background: #000000;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+.overlay-danger {
+    background: #ff0000;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+.overlay.clickable, .overlay-danger.clickable {
+    cursor: pointer;
+}

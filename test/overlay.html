@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>QUnit basic example</title>
+    <link rel="stylesheet" href="resources/qunit-1.10.0.css"/>
+    <link rel="stylesheet" href="../jquery.overlay.css"/>
+    <style type="text/css"><!--
+    #floating-element {
+        float: right;
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        background: grey;
+        margin: 20px;
+    }
+    #absolute-element {
+        position: absolute;
+        top: 300px;
+        left: 100px;
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        background: grey;
+        margin: 20px;
+    }
+    #normal-element {
+        height: 200px;
+        border: 1px solid black;
+        background: red;
+        text-align: center;
+        margin: 20px;
+    }
+    --></style>
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<script src="resources/jquery-1.8.2.min.js"></script>
+<script src="resources/qunit-1.10.0.js"></script>
+<script src="../jquery.id-1.0.js"></script>
+<script src="../jquery.overlay-1.0.js"></script>
+<script>
+    var lifecycle = {
+        setup: function () {
+            $("#qunit-fixture").html('<div class="overlayed" id="floating-element">This is a test</div><div class="overlayed" id="absolute-element">This is a test</div><div class="overlayed" id="normal-element">This is a test</div>');
+        },
+        teardown: function () {
+            $("#dump").html($("#qunit-fixture").html());
+        }
+    };
+//    module("Selection", lifecycle);
+//    test( "Overlay chaining test", function() {
+//        var selection = $(".overlayed");
+//        equal(selection.overlay().length, selection.length, "The length of the selection (" + selection.length + ") does not change after applying the overlay");
+//    });
+//    module("Events", lifecycle);
+//    test("Testing event: overlaying", function () {
+//        var selection = $(".overlayed");
+//        var count = 0;
+//        selection.on('overlaying', function () {
+//            count ++;
+//        }).overlay();
+//        equal(count, selection.length, "Overlaying of " + count + " elements was passed");
+//    });
+//    test("Testing event: overlayed", function () {
+//        var selection = $(".overlayed");
+//        var count = 0;
+//        selection.on('overlayed', function () {
+//            count ++;
+//        }).overlay();
+//        equal(count, selection.length, "Overlaying of " + count + " elements was done");
+//    });
+//    module("Boxing", lifecycle);
+//    test("Testing for correctness of overlay coordinates", function () {
+//        var selection = $(".overlayed");
+//        expect(selection.length * 4);
+//        selection.on('overlayed', function (event) {
+//            var target = $(event.target);
+//            equal(parseInt(event.target.overlay.css('top')), Math.floor(target.offset().top), event.target.id + ": Checking `top` validity for");
+//            equal(parseInt(event.target.overlay.css('left')), Math.floor(target.offset().left), event.target.id + ": Checking `left` validity");
+//            equal(parseInt(event.target.overlay.css('width')), Math.floor(event.target.offsetWidth), event.target.id + ": Checking `width` validity");
+//            equal(parseInt(event.target.overlay.css('height')), Math.floor(event.target.offsetHeight), event.target.id + ": Checking `height` validity");
+//        }).overlay();
+//    });
+    $(function () {
+        $.overlay({
+            className: 'overlay',
+            closeOnClick: false
+        });
+        $.overlay({
+            className: 'overlay',
+            closeOnClick: true
+        });
+    });
+</script>
+</body>
+</html>
