@@ -49,49 +49,39 @@
             $("#dump").html($("#qunit-fixture").html());
         }
     };
-//    module("Selection", lifecycle);
-//    test( "Overlay chaining test", function() {
-//        var selection = $(".overlayed");
-//        equal(selection.overlay().length, selection.length, "The length of the selection (" + selection.length + ") does not change after applying the overlay");
-//    });
-//    module("Events", lifecycle);
-//    test("Testing event: overlaying", function () {
-//        var selection = $(".overlayed");
-//        var count = 0;
-//        selection.on('overlaying', function () {
-//            count ++;
-//        }).overlay();
-//        equal(count, selection.length, "Overlaying of " + count + " elements was passed");
-//    });
-//    test("Testing event: overlayed", function () {
-//        var selection = $(".overlayed");
-//        var count = 0;
-//        selection.on('overlayed', function () {
-//            count ++;
-//        }).overlay();
-//        equal(count, selection.length, "Overlaying of " + count + " elements was done");
-//    });
-//    module("Boxing", lifecycle);
-//    test("Testing for correctness of overlay coordinates", function () {
-//        var selection = $(".overlayed");
-//        expect(selection.length * 4);
-//        selection.on('overlayed', function (event) {
-//            var target = $(event.target);
-//            equal(parseInt(event.target.overlay.css('top')), Math.floor(target.offset().top), event.target.id + ": Checking `top` validity for");
-//            equal(parseInt(event.target.overlay.css('left')), Math.floor(target.offset().left), event.target.id + ": Checking `left` validity");
-//            equal(parseInt(event.target.overlay.css('width')), Math.floor(event.target.offsetWidth), event.target.id + ": Checking `width` validity");
-//            equal(parseInt(event.target.overlay.css('height')), Math.floor(event.target.offsetHeight), event.target.id + ": Checking `height` validity");
-//        }).overlay();
-//    });
-    $(function () {
-        $.overlay({
-            className: 'overlay',
-            closeOnClick: false
-        });
-        $.overlay({
-            className: 'overlay',
-            closeOnClick: true
-        });
+    module("Selection", lifecycle);
+    test( "Overlay chaining test", function() {
+        var selection = $(".overlayed");
+        equal(selection.overlay().length, selection.length, "The length of the selection (" + selection.length + ") does not change after applying the overlay");
+    });
+    module("Events", lifecycle);
+    test("Testing event: overlaying", function () {
+        var selection = $(".overlayed");
+        var count = 0;
+        selection.on('overlaying', function () {
+            count ++;
+        }).overlay();
+        equal(count, selection.length, "Overlaying of " + count + " elements was passed");
+    });
+    test("Testing event: overlayed", function () {
+        var selection = $(".overlayed");
+        var count = 0;
+        selection.on('overlayed', function () {
+            count ++;
+        }).overlay();
+        equal(count, selection.length, "Overlaying of " + count + " elements was done");
+    });
+    module("Boxing", lifecycle);
+    test("Testing for correctness of overlay coordinates", function () {
+        var selection = $(".overlayed");
+        expect(selection.length * 4);
+        selection.on('overlayed', function (event) {
+            var target = $(event.target);
+            equal(parseInt(event.target.overlay.css('top')), Math.floor(target.offset().top), event.target.id + ": Checking `top` validity for");
+            equal(parseInt(event.target.overlay.css('left')), Math.floor(target.offset().left), event.target.id + ": Checking `left` validity");
+            equal(parseInt(event.target.overlay.css('width')), Math.floor(event.target.offsetWidth), event.target.id + ": Checking `width` validity");
+            equal(parseInt(event.target.overlay.css('height')), Math.floor(event.target.offsetHeight), event.target.id + ": Checking `height` validity");
+        }).overlay();
     });
 </script>
 </body>
