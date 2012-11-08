@@ -7,7 +7,16 @@
  */
 
 (function ($) {
+    /**
+     * This method will generate IDs that are unique across the document and randomly generated
+     * while adding the given prefix.
+     * @param prefix
+     * @return {String}
+     */
     $.generateId = function (prefix) {
+        if (!prefix) {
+            prefix = "";
+        }
         var noise = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
             'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '-', '_'];
         var id = "";
@@ -63,6 +72,11 @@
 })(jQuery);
 
 (function ($) {
+    /**
+     * This will clear IDs from any elements that have been modified using $.identify, while
+     * leaving the rest alone.
+     * @return {*}
+     */
     $.fn.unidentify = function () {
         var context = $(this);
         context.each(function () {
