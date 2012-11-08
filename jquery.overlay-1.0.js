@@ -143,6 +143,8 @@
                         }
                     });
                 }
+            }).on('overlayClosed', function () {
+                bodyOverlay.remove();
             }).overlay(options);
             $(window).resize(function () {
                 updateSize();
