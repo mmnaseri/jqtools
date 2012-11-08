@@ -55,6 +55,7 @@
                 }
                 overlay.remove();
                 element.trigger('overlayClosed');
+                element.unidentify();
             };
             element.get(0).overlay = overlay;
             overlay.update();
