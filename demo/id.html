@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Demo: jquery.id</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript" src="../test/resources/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="../jquery.id-1.0.js"></script>
+    <style type="text/css">
+        #id-test {
+            border: 1px dashed #808080;
+            padding: 5px;
+        }
+
+        #id-test span {
+            border: 1px solid #6490bd;
+            display: inline-block;
+            padding: 3px;
+            background: #85c0f8;
+            color: #1f6cb3;
+            margin: 2px;
+        }
+        body {
+            background: #f6f6f6;
+            margin: 0;
+            padding-right: 450px;
+            padding-top: 50px;
+            cursor: default;
+        }
+        .fixture {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 400px;
+            background: #ffffff;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px;
+            bottom: 0;;
+        }
+        h1 {
+            margin: 0;
+            background: #1f6cb3;
+            color: #ffffff;
+            padding: 5px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+        div.demo {
+            margin: 10px;
+            background: #c9e1f5;
+            border-radius: 10px;
+            padding-bottom: 10px;
+        }
+        div.demo h2 {
+            margin: 10px;
+            padding-top: 10px;
+        }
+        div.demo p {
+            margin: 10px;
+        }
+        div.demo p code {
+            background: #d5ebf5;
+        }
+        pre {
+            border: 1px dashed #0a76b0;
+            background: #b2def5;
+            padding: 3px;
+            margin: 10px;
+        }
+        div.action {
+            background: #a0e0ef;
+            padding: 10px;
+            text-align: right;
+        }
+        div.action button {
+            border: 1px solid #7ea7c5;
+            background: #9dd0f5;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+    </style>
+    <script type="text/javascript"><!--
+    run = function (execution) {
+        eval($("code#" + execution).html());
+        $("div#id-test span").each(function () {
+            $(this).html(this.id ? this.id : "&nbsp;");
+        });
+    };
+    //--></script>
+</head>
+<body>
+<h1>Using <code>jQuery.identify</code> and <code>jQuery.unidentify</code></h1>
+<div class="fixture">
+<p>In this demo you will see how using <code>jQuery.identify</code> and <code>jQuery.unidentify</code>
+    can help you add (temporary) unique identifiers to your elements of choice.</p>
+    <div id="auto-id"><span>Generated id:</span> <em>(none)</em></div>
+    <div id="id-test">
+    <span id="span-1">span-1</span>
+    <span>&nbsp;</span>
+    <span id="span-3">span-3</span>
+    <span>&nbsp;</span>
+</div>
+<p>In the above block, the structure is <code>div#id-test span</code> with four different <code>span</code>s being
+    available. The first and the third are identified &mdash; respectively &mdash; as <code>span-1</code> and
+    <code>span-3</code>. The other two do not have <code>id</code>s.
+</p>
+<p>The <code>id</code>s for each of these is written inside of them.</p>
+</div>
+<div class="demo">
+    <h2>Assigning <code>id</code>s</h2>
+
+    <p>You can easily assign unique <code>id</code>s to your elements if they don't have one already.
+        Running the code:</p>
+<pre>
+    <code id='code-assign-normal'>$("div#id-test span").identify('custom-');</code>
+</pre>
+    <p>will give each of these <code>span</code>s a unique <code>id</code>, <strong>in case they don't
+        already have one.</strong></p>
+    <p>This means that not only this plugin won't damage the structure of your existing DOM elements,
+    subsequent calls to it will not cause any problems.</p>
+    <div class="action">
+        <button type="button" onclick="run('code-assign-normal');"><span>Execute</span></button>
+    </div>
+</div>
+<div class="demo">
+    <h2>Cleaning up</h2>
+    <p>To clean up after yourself, you just have to call <code>$.unidentify</code>. This will
+        remove <strong><code>id</code>s assigned by <code>$.identify</code></strong> and leave the rest of your
+        elements alone.</p>
+
+    <p>To achieve this, you can run the following code:</p>
+<pre>
+    <code id='code-remove'>$("div#id-test span").unidentify();</code>
+</pre>
+    <div class="action">
+        <button type="button" onclick="run('code-remove');"><span>Execute</span></button>
+    </div>
+</div>
+<div class="demo">
+    <h2>Some customization</h2>
+    <p>You can deduce prefixes based on the object currently being modified. This is done by
+    specifying a closure for the <em>optional</em> <code>prefix</code> parameter:</p>
+    <pre>
+        <code id='code-assign-custom'>var x = 0; $("div#id-test span").identify(function (element) {return element.nodeName + '-' + (++x) + '-';});</code>
+    </pre>
+    <div class="action">
+        <button type="button" onclick="run('code-assign-custom');"><span>Execute</span></button>
+    </div>
+</div>
+<div class="demo">
+    <h2>Detached <code>id</code>s</h2>
+    <p>You can also just as easily generate unique identifiers without assigning them to any elements
+        for the moment, maybe using them in your own way, though using <code>$.identify</code> is always
+        more advisable as it will give you the power of automagical restoration.</p>
+<pre>
+    <code id='code-generate'>$("#auto-id em").html($.generateId('myprefix-'));</code>
+</pre>
+    <div class="action">
+        <button type="button" onclick="run('code-generate')"><span>Execute</span></button>
+    </div>
+</div>
+</body>
+</html>

@@ -44,14 +44,13 @@
      */
     $.fn.identify = function (prefix) {
         if (!prefix) {
-            prefix = function () {
-                return "";
-            };
+            prefix = "";
         }
         if (!$.isFunction(prefix)) {
+            var value = prefix;
             prefix = function () {
-                return prefix;
-            }
+                return value;
+            };
         }
         var context = $(this);
         context.each(function () {
@@ -64,7 +63,7 @@
             }
             //we first mark this element as modified by the extension
             element.get(0).autoIdentified = true;
-            element.get(0).id = $.generateId(prefix(element.get(0)));
+            element.get(0).setAttribute('id', $.generateId(prefix(element.get(0))));
             element.trigger("identified");
         });
         return context;
@@ -83,7 +82,7 @@
             var element = $(this);
             element.trigger('unidentify');
             if (element.get(0).autoIdentified) {
-                element.get(0).id = null;
+                element.get(0).removeAttribute('id');
                 element.get(0).autoIdentified = null;
                 element.trigger('unidentified');
             }

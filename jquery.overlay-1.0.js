@@ -29,12 +29,13 @@
                 options = {};
             }
             if (!$.isFunction(options)) {
-                options.call = function () {
-                    return options;
+                var value = options;
+                options = function () {
+                    return value;
                 };
             }
             var element = $(this);
-            var config = options.call(element.get(0));
+            var config = options(element.get(0));
             if (!config) {
                 config = {};
             }
