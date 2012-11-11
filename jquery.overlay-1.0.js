@@ -79,7 +79,7 @@
             if (config.monitor) {
                 overlay.get(0).interval = setInterval(function () {
                     overlay.update();
-                }, 100);
+                }, 1);
             }
             if (config.closeOnClick) {
                 overlay.addClass('clickable');
@@ -93,29 +93,6 @@
 })(jQuery);
 
 (function ($) {
-    function getWindowSize() {
-        var width = 0, height = 0;
-        if (typeof(window.innerWidth) == 'number') {
-            //Non IE
-            width = window.innerWidth;
-            height = window.innerHeight;
-        }
-        if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
-            //IE 6+ in 'standards compliant mode'
-            width = Math.max(document.documentElement.clientWidth, width);
-            height = Math.max(document.documentElement.clientHeight, height);
-        }
-        if (document.body && ( document.body.clientWidth || document.body.clientHeight )) {
-            //IE 4 compatible
-            width = Math.max(document.body.clientWidth, width);
-            height = Math.max(document.body.clientHeight, height);
-        }
-        return {
-            width:width,
-            height:height
-        };
-    }
-
     /**
      * This method will add an overlay to the inner rectangle of the window object,
      * monitoring its size and adjusting to it continually, also allowing for multiple
@@ -128,8 +105,9 @@
     $.overlay = function (options) {
         var id = "body-overlay";
         var bodyOverlay = $("#" + id);
+        var body = $("body").get(0);
         if (bodyOverlay.length == 0) {
-            $($("body").get(0).lastChild).after("<div id='" + id + "'></div>");
+            $(body.lastChild).after("<div id='" + id + "'></div>");
             bodyOverlay = $("#" + id);
             bodyOverlay.get(0).count = 1;
         } else {
@@ -140,40 +118,40 @@
                 options = {};
             }
             if ($.isFunction(options)) {
-                options = options.call($("body").get(0));
+                options = options.call(body);
             }
             var closeOnClick = options.closeOnClick;
             options.monitor = true;
             options.closeOnClick = false;
+            bodyOverlay.css('z-index', parseInt(bodyOverlay.css('z-index')) + 1000);
             function updateSize() {
-                var windowSize = getWindowSize();
                 bodyOverlay.css('display', 'block');
                 bodyOverlay.css('position', 'absolute');
-                bodyOverlay.css('left', '0');
-                bodyOverlay.css('top', '0');
-                bodyOverlay.css('width', windowSize.width + "px");
-                bodyOverlay.css('height', windowSize.height + "px");
+                bodyOverlay.css('left', $(window).scrollLeft());
+                bodyOverlay.css('top', $(window).scrollTop());
+                bodyOverlay.css('width', $(window).width() + "px");
+                bodyOverlay.css('height', $(window).height() + "px");
             }
             updateSize();
             bodyOverlay.on('overlayed',function () {
                 if (closeOnClick) {
                     bodyOverlay.get(0).overlay.click(function () {
-                        bodyOverlay.get(0).count --;
+                        bodyOverlay.get(0).count--;
                         if (bodyOverlay.get(0).count == 0) {
                             bodyOverlay.get(0).overlay.close();
                             clearInterval(bodyOverlay.get(0).interval);
                         }
                     });
                 }
-            }).on('overlayClosed', function () {
-                bodyOverlay.remove();
-            }).overlay(options);
+            }).on('overlayClosed',function () {
+                    bodyOverlay.remove();
+                }).overlay(options);
             $(window).resize(function () {
                 updateSize();
             });
-            bodyOverlay.get(0).interval = setInterval(function () {
+            $(window).scroll(function () {
                 updateSize();
-            }, 20);
+            });
         }
     };
 })(jQuery);

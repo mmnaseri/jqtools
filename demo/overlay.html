@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Demo: jQuery.overlay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript" src="../test/resources/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="../jquery.id-1.0.js"></script>
+    <script type="text/javascript" src="../jquery.overlay-1.0.js"></script>
+    <link rel="stylesheet" href="../jquery.overlay.css"/>
+    <style type="text/css">
+        #div-flying {
+            position: fixed;
+            width: 150px;
+            border: 1px solid #366097;
+            padding: 10px;
+            background: #0a76b0;
+            color: #ffffff;
+            z-index: 1000;
+        }
+        #content {
+            width: 200px;
+            margin: 10px;
+            background: #b4ccf8;
+            border: 1px solid #a7b8f8;
+        }
+    </style>
+    <script type="text/javascript"><!--
+    $(function () {
+        $("#content span").overlay();
+        function getWindowSize() {
+            var width = 0, height = 0;
+            if (typeof(window.innerWidth) == 'number') {
+                //Non IE
+                width = window.innerWidth;
+                height = window.innerHeight;
+            }
+            if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+                //IE 6+ in 'standards compliant mode'
+                width = Math.max(document.documentElement.clientWidth, width);
+                height = Math.max(document.documentElement.clientHeight, height);
+            }
+            if (document.body && ( document.body.clientWidth || document.body.clientHeight )) {
+                //IE 4 compatible
+                width = Math.max(document.body.clientWidth, width);
+                height = Math.max(document.body.clientHeight, height);
+            }
+            return {
+                width:width,
+                height:height
+            };
+        }
+        $("#div-flying").css('left', '100px');
+        $("#div-flying").css('top', '100px');
+        var p = {
+            left:0.3,
+            right:0.3,
+            up:0.3,
+            down:0.3
+        };
+        var last = 0;
+        setInterval(function () {
+            var left = parseInt($("#div-flying").css('left'));
+            var h = Math.random() < p.left ? -1 : Math.random() < p.right ? 1 : 0;
+            if (h < 0) {
+                p.left *= 0.5;
+                p.right *= 2;
+            } else if (h > 0) {
+                p.left *= 2;
+                p.right *= 0.5;
+            }
+            if (p.right > 0.8) {
+                p.right = 0.8;
+            }
+            if (p.left > 0.8) {
+                p.left = 0.8;
+            }
+            var xDisplacement = Math.floor(Math.random() * 10);
+            left += h * xDisplacement;
+            var top = parseInt($("#div-flying").css('top'));
+            var v = Math.random() < p.up ? -1 : Math.random() < p.down ? 1 : 0;
+            var yDisplacement = Math.floor(Math.random() * 10);
+            top += v * yDisplacement;
+            if (top < 0) {
+                top = 0;
+            }
+            if (left < 0) {
+                left = 0;
+            }
+            if (left + $("#div-flying").get(0).offsetWidth > getWindowSize().width) {
+                left = getWindowSize().width - $("#div-flying").get(0).offsetWidth;
+            }
+            if (top + $("#div-flying").get(0).offsetHeight > getWindowSize().height) {
+                top = getWindowSize().height - $("#div-flying").get(0).offsetHeight;
+            }
+            $("#div-flying").css('left', left + 'px');
+            $("#div-flying").css('top', top + 'px');
+            if (Math.random() > 0.8) {
+                setTimeout(function () {
+                    if (last == 0) {
+                        $("#div-flying").css('width', '100px');
+                        last = 1;
+                    } else if (last == 1) {
+                        $("#div-flying").css('width', '150px');
+                        last = Math.random() > 0.5 ? 0 : 2;
+                    } else if (last == 2) {
+                        $("#div-flying").css('width', '300px');
+                        last = 1;
+                    }
+                }, Math.random() * 2000);
+            }
+        }, 10);
+        setTimeout(function () {
+            $("#div-flying").overlay({
+                monitor:true
+            });
+        }, 1550);
+    });
+    //--></script>
+</head>
+<body>
+<div id="div-flying">This div will be flying around the screen, never stopping, trying to leave behind
+    the overlay persuing it ... or shake itself free
+</div>
+<button type="button" onclick="$.overlay({closeOnClick: true, className: 'overlay-danger'});">Click to overlay!</button>
+<div id='content'>
+
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer dui turpis, porta eget mattis vitae, fringilla
+        fringilla ante. Morbi non ultrices magna. Pellentesque non libero purus, id viverra lorem. Lorem ipsum dolor sit
+        amet, consectetur adipiscing elit. Quisque cursus convallis metus, non euismod lorem pulvinar ut. Vestibulum sed
+        tortor a turpis consectetur suscipit <span>nec</span> a justo. Fusce dictum hendrerit pretium. Suspendisse faucibus pulvinar
+        volutpat. Suspendisse tempus volutpat convallis. Vestibulum non elit lacinia quam ornare eleifend gravida ac
+        turpis. Suspendisse vestibulum neque eget est fermentum semper. Quisque convallis auctor ipsum, sit amet
+        pulvinar lectus dapibus lobortis.
+    </p>
+
+    <p>
+        In odio massa, feugiat et ornare eget, pretium ut dolor. In vulputate risus non sapien ultricies tincidunt.
+        Curabitur lobortis, urna et egestas porttitor, augue nisi scelerisque velit, eget rutrum eros massa sed arcu.
+        Proin egestas tellus et purus pellentesque ac viverra felis sodales. Maecenas ut velit id libero mattis
+        fringilla sed non purus. Aenean <span>nec</span> sapien metus, eu feugiat dui. Ut sit amet odio nulla. Praesent risus arcu,
+        ullamcorper ut porta sed, posuere ut velit. Vestibulum auctor turpis id tortor ullamcorper adipiscing. Nullam
+        mollis egestas mauris, sed sagittis nisl luctus a.
+    </p>
+
+    <p>
+        Maecenas dapibus enim vitae lectus varius id lobortis nulla suscipit. Ut scelerisque nisl sed tellus tincidunt
+        eget aliquam justo luctus. Aliquam ac justo quis sem viverra rhoncus a non est. Duis tincidunt consectetur
+        viverra. Suspendisse potenti. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse et justo eget
+        orci imperdiet malesuada a sed urna. Fusce porttitor, eros a faucibus sollicitudin, sem sapien mollis ipsum, <span>nec</span>
+        congue magna nisi non nibh. Maecenas at convallis ante. Fusce orci est, ultricies sed aliquet eget, facilisis
+        volutpat lectus. Suspendisse mollis nibh <span>nec</span> tellus tincidunt non iaculis augue dignissim.
+    </p>
+
+    <p>
+        Nulla vel ligula id arcu faucibus accumsan et sit amet nisi. Maecenas congue, nunc sit amet semper porttitor,
+        metus urna blandit elit, <span>nec</span> cursus risus erat sed purus. Suspendisse potenti. Suspendisse tortor arcu, auctor a
+        mollis <span>nec</span>, dapibus quis nisi. Cras pulvinar gravida rhoncus. Pellentesque sed eros id nisi pharetra pretium a
+        eu massa. Mauris mi diam, pulvinar tristique ultricies ut, elementum at dui. Ut sapien arcu, porttitor et tempus
+        non, luctus a eros. Sed lectus lorem, fringilla sit amet eleifend id, aliquam in felis. In a tempus quam.
+    </p>
+
+    <p>
+        Sed sollicitudin scelerisque eros, at tempus nibh ultrices ut. Praesent porta purus sit amet nisl fringilla
+        consectetur. Pellentesque habitant morbi tristique se<span>nec</span>tus et netus et malesuada fames ac turpis egestas.
+        Vestibulum at sem eget sem consequat malesuada id at nibh. Sed ut nisi magna. Sed ullamcorper enim eget urna
+        aliquam a viverra nunc bibendum. Aenean gravida pharetra tortor, vehicula varius magna placerat id. Morbi
+        fermentum accumsan sem. Vestibulum urna lectus, rutrum <span>nec</span> interdum eget, consequat vel nisl. Integer porta, sem
+        eget lobortis convallis, ipsum eros porta elit, vel iaculis velit nisi sit amet diam. Ut eu metus ut est
+        molestie sagittis sit amet eget mi. Mauris vitae mauris nunc. Pellentesque ante tortor, gravida id dictum a,
+        varius quis nunc.
+    </p></div>
+</body>
+</html>

@@ -2,14 +2,24 @@
     background: #000000;
     opacity: 0.5;
     filter: alpha(opacity=50);
+    z-index: 10000;
 }
 
 .overlay-danger {
     background: #ff0000;
     opacity: 0.5;
     filter: alpha(opacity=50);
+    z-index: 10000;
 }
 
 .overlay.clickable, .overlay-danger.clickable {
     cursor: pointer;
+}
+
+.scrollbar-measure {
+    width: 100px;
+    height: 100px;
+    overflow: scroll;
+    position: absolute;
+    top: -9999px;
 }
